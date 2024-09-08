@@ -52,9 +52,72 @@ public class AuthorController {
             return  new ResponseEntity<>(authorRespone, HttpStatus.NOT_FOUND);
         }
     }
+    // Aad author recode to author_table
+    @PostMapping("/saveAuthor")
+    public ResponseEntity<AuthorRespone<Author>>saveAuthor(@RequestBody Author author){
+        Optional<Author>authorOptional=authorService.saveAuthor(author);
+        if(authorOptional.isPresent()){
+            AuthorRespone authorRespone=AuthorRespone.builder()
+                    .message("add author successfully")
+                    .status(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .authorList(authorOptional)
+                    .build();
+            return new ResponseEntity<>(authorRespone, HttpStatus.OK);
+        }else{
+            AuthorRespone authorRespone=AuthorRespone.builder()
+                    .message("author with this id already exist!!!!")
+                    .status(HttpStatus.valueOf(409))
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return new ResponseEntity<>(authorRespone, HttpStatus.valueOf(409));
+        }
+    }
+    @PutMapping("/updateAuthor/{id}")
+    public ResponseEntity<AuthorRespone<Author>>updateAuthor(@RequestBody Author author,@PathVariable int id){
+        Optional<Author>author1=authorService.updateAuthor(author,id);
+        System.out.println("called in update author");
+        if(author1.isPresent()){
+            AuthorRespone authorRespone=AuthorRespone.builder()
+                    .message("update author successfully")
+                    .status(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .authorList(author1)
+                    .build();
+            return new ResponseEntity<>(authorRespone,HttpStatus.OK);
+        }else {
+            AuthorRespone authorRespone=AuthorRespone.builder()
+                    .message("author to be update does not exist!!!!")
+                    .status(HttpStatus.NOT_FOUND)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return new ResponseEntity<>(authorRespone,HttpStatus.NOT_FOUND);
+        }
+    }
 
-    public ResponseEntity<AuthorRespone<Author>>saveAuthor(@RequestBody,@PathVariable int id){
-        return null;
+    @DeleteMapping("/deleteAuthor/{id}")
+    public ResponseEntity<AuthorRespone<Author>>deleteById(@PathVariable int id){
+        Optional<Author> author=authorService.deleteAuthorById(id);
+        if(author.isPresent()){
+            AuthorRespone authorRespone=AuthorRespone.builder()
+                    .message("Delete book successfully")
+                    .status(HttpStatus.OK)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .authorList(author)
+                    .build();
+            return new ResponseEntity<>(authorRespone, HttpStatus.OK);
+
+        }else {
+            AuthorRespone authorRespone=AuthorRespone.builder()
+                    .message("Fail to delete author")
+                    .status(HttpStatus.NOT_FOUND)
+                    .timestamp(new Timestamp(System.currentTimeMillis()))
+                    .build();
+            return new ResponseEntity<>(authorRespone, HttpStatus.valueOf(404));
+
+        }
+
     }
 
 }
+

@@ -3,7 +3,6 @@ package com.chan.springbootpractice.Repository;
 import com.chan.springbootpractice.model.Author;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 @Repository
@@ -20,8 +19,12 @@ public interface AuthorRepo {
     @Select("SELECT * FROM author_table WHERE author_id=#{id} ")
     Author getAuthorById(int id);
     //update author info by her or her id
-    @Update("UPDATE author_table SET author_id=#{au.author_id},username=#{au.username},gender=#{au.gender} ")
-    void updateAuthorById(@Param("au") Author author);
+    @Update("UPDATE author_table SET username=#{au.username},gender=#{au.gender} " +
+            " WHERE author_id=#{id}")
+    void updateAuthor(@Param("au") Author author,int id);
+    //delete author by id
+    @Delete("DELETE FROM author_table WHERE author_id =#{id} ")
+    void deleteAuthorById(int id);
 
 
 

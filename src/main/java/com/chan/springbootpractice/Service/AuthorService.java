@@ -32,5 +32,18 @@ public class AuthorService {
     public Optional<Author>getAuthorById(int id){
        return Optional.ofNullable(authorRepo.getAuthorById(id));
     }
+    public Optional<Author>updateAuthor(Author author,int id){
+        authorRepo.updateAuthor(author,id);
+        return  Optional.ofNullable(authorRepo.getAuthorById(id));
+    }
+
+    public  Optional<Author> deleteAuthorById(int id){
+        Author author=authorRepo.getAuthorById(id);
+        authorRepo.deleteAuthorById(id);
+        return Optional.ofNullable(author);
+    }
+
+
+
 
 }

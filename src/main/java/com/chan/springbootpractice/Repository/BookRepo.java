@@ -1,5 +1,6 @@
 package com.chan.springbootpractice.Repository;
 
+import com.chan.springbootpractice.model.Author;
 import com.chan.springbootpractice.model.Book;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public interface BookRepo {
     void deleteBookById(int id);
     @Update("UPDATE Book SET book_title=#{book.book_title}, Author_name=#{book.Author_name} ,date=#{book.date} " +
             " WHERE book_id=#{id}")
-    void updateBookById(int id,@Param("book") Book book);
+    Author updateBookById(int id, @Param("book") Book book);
 
 
 }
